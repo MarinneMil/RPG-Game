@@ -196,6 +196,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			player.getLocation().drawLocation(g2d);
 
 			player.getLocation().getOption();
+			drawLocationsScreen(g2d);
 				break;
 
 				// case"gameplay":
@@ -214,6 +215,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		g2d.drawString("Your weapon levels for " + player.toString() + " is" + ". You skill levels are " +  " damage: " + player.getWeap().getdamage() + " duribility: "
 				+ player.getWeap().getduribility() + " dps: " + player.getWeap().getDps() + " speed: " + player.getSpeed(), 200, 800);
 
+				customer.peek().drawChar(g2d);
+
+	}
+	public void drawLocationsScreen(Graphics g2d) {
+		player.drawChar(g2d);
 				customer.peek().drawChar(g2d);
 
 	}
@@ -266,7 +272,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		// TODO Auto-generated method stub
 		x = arg0.getX();
 		y = arg0.getY();
+		if(screen == "Locations"){
 		player.setX(x);
+		player.setY(y);
+		}
 	}
 
 	@Override
