@@ -17,6 +17,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.util.Scanner;
+import java.io.IOException;
+
 import java.awt.event.*;
 
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
@@ -29,15 +35,16 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private ImageIcon kitchenbackground;
 	private ArrayList<Weapons> WeapList;
 	private Queue <Customers> customer; 
-
 	private ImageIcon restaurant;
 	// private ArrayList <Ranged> rangedWeap;
+	private File saveFile; 
 
 	public Game() {
 		new Thread(this).start();
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+		saveFile=new File("save_file2.0.txt");
 		key = -1;
 		x = 0;
 		y = 0;
@@ -50,6 +57,56 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		restaurant=new ImageIcon ("pictures/restaurantbackground.jpg");
 		kitchenbackground=new ImageIcon ("pictures/kitchen.jpg");
 	}
+
+	public void createFile(){
+		try {
+			if(saveFile.createNewFile()){
+				System.out.println("succesfully cretaed file!");
+			}
+			else{
+				System.out.println("File already exists");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void readFile(){
+		Scanner sc;
+		try {
+			sc = new Scanner(saveFile);
+			while(sc.hasNextLine()){
+				System.out.println(sc.nextLine());
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void writeToFile(){
+		FileWriter myWriter;
+		try{
+	 myWriter = new FileWriter(saveFile);
+
+	//write whatever you want to save 
+	if(customer.isEmpty()){
+		myWriter.write("win");
+	}
+	else {
+		myWriter.write("you have "+customer.size()+"enemies left");
+	}
+	myWriter.close();
+	System.out.println("succesfuly wrote to file");
+} catch (IOException e){
+	// TODO Auto-generated castch block 
+	e.printStackTrace();
+}
+}
+
+	
 
 	public Queue <Customers> setEs(){
 		Queue <Customers> temp = new LinkedList <> ();
@@ -209,6 +266,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		// TODO Auto-generated method stub
 		x = arg0.getX();
 		y = arg0.getY();
+		player.setX(x);
 	}
 
 	@Override
