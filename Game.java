@@ -5,6 +5,7 @@ import Staff.BusBoy;
 import Staff.Characters;
 import Staff.Chef;
 import Staff.Manager;
+import Staff.RequestItems;
 import Staff.waiter;
 import Staff.Items.ClipBoard;
 import Staff.Items.Pan;
@@ -163,8 +164,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		drawScreens(g2d);
 
 		twoDgraph.drawImage(back, null, 0, 0);
-
+		
 	}
+
+
 
 	private void drawScreens(Graphics g2d) {
 		switch (screen) {
@@ -197,10 +200,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 			player.getLocation().getOption();
 			drawLocationsScreen(g2d);
+			
 				break;
 
-				// case"gameplay":
-				// drawGameScreen;
+				
 		}
 	}
 
@@ -281,7 +284,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		if(screen == "Locations"){
+			if(player.getLocation().getOption().mouseCol(arg0.getX(), arg0.getY())){
+				
+				//add new order on top
+				//player.getLocation.addOption() or player.getLocation.getOptions.remove()
+			}
+		} 
+		
 	}
 
 	@Override
@@ -314,7 +324,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		if(screen.equals("selection") &&  x>300 && x<500 && y>900 && y<950){
 			screen="Locations";
 		} 
+		
 	}
+	
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {

@@ -36,7 +36,10 @@ public class Locations {
         g2d.drawImage(pic.getImage(), 0,0,getWidth(), getHeight(), null);
         g2d.drawString("options! "+option, 300,300);
         g2d.drawString("List! "+option.getList(), 300,400);
-
+        for (RequestItems r : option.getList()) {
+            g2d.drawImage(r.getPic().getImage(), r.getX(), r.getY(), r.getW(), r.getH(), null);
+        }
+        
 
     }
 
