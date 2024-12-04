@@ -1,4 +1,7 @@
 package Staff;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
 import javax.swing.ImageIcon;
 
 public class RequestItems{
@@ -57,6 +60,19 @@ public ImageIcon getPic() {
 }
 public void setPic(ImageIcon pic) {
     this.pic = pic;
+}
+public void drawImage(Graphics g2d) {
+    // TODO Auto-generated method stub
+g2d.drawImage(pic.getImage(), x,y,w,h,null)  ;
+System.out.println("item on "+Items);
+}
+public boolean mouseCol(int xv, int yv){
+    Rectangle mouse = new Rectangle(xv,yv, 1,1);
+    Rectangle order = new Rectangle(x,y,w,h);
+     if(mouse.intersects(order))
+     return true;
+
+     return false;
 }
 
 }

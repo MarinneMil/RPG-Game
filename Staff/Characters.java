@@ -19,6 +19,7 @@ public class Characters {
     private Options tasks;
     private Locations location;
     private String Name;
+    public Object getLocation;
 
     public Characters() {
         x = 0;
@@ -74,23 +75,7 @@ public class Characters {
         Name = name;
     }
 
-    /*     public Characters(int xV, int yV, int width, int height, int sp, int hea, int sma, int frie, ImageIcon p, Weapons we, Locations loc) {
-        x = xV;
-        y = yV;
-        w = width;
-        h = height;
-        speed = sp;
-        health = hea;
-        smarts = sma;
-        friendliness = frie;
-        pic = p;
-        dx = 0;
-        dy = 0;
-        weap = we;
-       // tasks = t;
-        location = loc;
-    }
- */
+   
     public Locations getLocation() {
         return location;
     }

@@ -5,6 +5,8 @@ import Staff.BusBoy;
 import Staff.Characters;
 import Staff.Chef;
 import Staff.Manager;
+import Staff.Options;
+import Staff.Pizza;
 import Staff.RequestItems;
 import Staff.waiter;
 import Staff.Items.ClipBoard;
@@ -35,8 +37,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private Characters player;
 	private ImageIcon kitchenbackground;
 	private ArrayList<Weapons> WeapList;
-	private Queue <Customers> customer; 
+	private Queue <Customers> customer;  
 	private ImageIcon restaurant;
+	private long startTime;
+    private boolean taskCompleted = false;
+	private int RequestItems;
 	// private ArrayList <Ranged> rangedWeap;
 	private File saveFile; 
 
@@ -50,13 +55,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		x = 0;
 		y = 0;
 		CharList = setCharList();
-		WeapList = setWeapList();
+		WeapList = setWeapList(); 
 		screen = "start";
 		// rangedWeap = new ArrayList <Ranged> ();
 		customer = setEs();
 		//System.out.println(CharList.get(0).getTasks().getList());
 		restaurant=new ImageIcon ("pictures/restaurantbackground.jpg");
 		kitchenbackground=new ImageIcon ("pictures/kitchen.jpg");
+		RequestItems = 0;
 	}
 
 	public void createFile(){
@@ -97,7 +103,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		myWriter.write("win");
 	}
 	else {
-		myWriter.write("you have "+customer.size()+"enemies left");
+		myWriter.write("you have "+customer.size()+"tasks left left");
 	}
 	myWriter.close();
 	System.out.println("succesfuly wrote to file");
@@ -139,6 +145,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 		return temp;
 	}
+
+	
+
+	
 
 	@SuppressWarnings("static-access")
 	public void run() {
@@ -200,6 +210,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 			player.getLocation().getOption();
 			drawLocationsScreen(g2d);
+			completeTask();
 			
 				break;
 
@@ -215,23 +226,50 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				200, 700);
 
 		player.drawWeap(g2d);
-		g2d.drawString("Your weapon levels for " + player.toString() + " is" + ". You skill levels are " +  " damage: " + player.getWeap().getdamage() + " duribility: "
-				+ player.getWeap().getduribility() + " dps: " + player.getWeap().getDps() + " speed: " + player.getSpeed(), 200, 800);
+		//g2d.drawString("Your weapon levels for " + player.toString() + " is" + ". You skill levels are " +  " damage: " + player.getWeap().getdamage() + " duribility: "
+		//		+ player.getWeap().getduribility() + " dps: " + player.getWeap().getDps() + " speed: " + player.getSpeed(), 200, 800);
 
 				customer.peek().drawChar(g2d);
 
 	}
 	public void drawLocationsScreen(Graphics g2d) {
 		player.drawChar(g2d);
-				customer.peek().drawChar(g2d);
+		customer.peek().drawChar(g2d);
+	
+		// Draw items in the current location
+		//for (Options option : player.getLocation().getOptionList()) {
+		System.out.println("init topp "+player.getLocation().getTopp());
+		for(int i=0; i<player.getLocation().getTopp(); i++){
 
-	}
+		
+			player.getLocation().getOptionList().get(0).getList().get(i).drawImage(g2d);
+			}
+		}
+	
+	
+	public void completeTask() {
+        if (taskCompleted) {
+            long endTime = System.currentTimeMillis();
+            long timeTaken = endTime - startTime;
+            int score = calculateScore(timeTaken);
+            JOptionPane.showMessageDialog(null, "Task Completed in " + timeTaken + " milliseconds. Your score: " + score);
+            
+        }
+    }
 
-	// public void attack(){
-	// 	if(player.getWeap() instance of Ranged){
-	// 		rangedWeap.add(new Ranged(player.getx(), player.gety(), );
-	// 	}
-	//}
+
+    // Calculate score based on time taken
+    private int calculateScore(long timeTaken) {
+        if (timeTaken < 5000) {
+            return 100;  // Excellent, if completed in under 5 seconds
+        } else if (timeTaken < 10000) {
+            return 75;  // Good, if completed in under 10 seconds
+        } else {
+            return 50;  // Could be better, if completed in over 10 seconds
+        }
+    }
+
+	
 	// DO NOT DELETE
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -281,18 +319,29 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		}
 	}
 
-	@Override
+	 @Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		if(screen == "Locations"){
-			if(player.getLocation().getOption().mouseCol(arg0.getX(), arg0.getY())){
-				
-				//add new order on top
-				//player.getLocation.addOption() or player.getLocation.getOptions.remove()
+	// TODO Auto-generated method stub
+
+
+	/* for (Option o : PizList) {
+			player = o;
+			if (o.mouseCol(x, y)) {
+			if(screen.equals("Kitchen")) {	
+			
+			int topp=0;
+			for (int i; i<topp;topp++){
+				g2d.draw(PizList.get(topp));
 			}
-		} 
+		// collistion 
+		topp ++;
+			}
+			//else if 
+		}
+	} */
 		
-	}
+	 }
+
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -314,17 +363,29 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		x = arg0.getX();
 		y = arg0.getY();
 
-		for (Characters c : CharList) {
-			if (c.mouseCol(x, y)) {
+		if(screen.equals("start")){
+			for (Characters c : CharList) {
+
+				if (c.mouseCol(x, y)) {
+					screen = "selection";
+					System.out.println(c);
 				player = c;
-				screen = "selection";
+				}
 			}
 		}
 		//customer.remove();
-		if(screen.equals("selection") &&  x>300 && x<500 && y>900 && y<950){
+		else if(screen.equals("selection") &&  x>300 && x<500 && y>900 && y<950){
 			screen="Locations";
-		} 
-		
+		}
+		if(screen.equals("Locations"))
+		{
+			for( RequestItems r: player.getLocation().getOption().getList()){
+			if(r.mouseCol(arg0.getX(), arg0.getY())){
+				//stuff happens]
+				player.getLocation().incTopp();
+			}
+		}
+	}
 	}
 	
 
