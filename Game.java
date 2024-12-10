@@ -25,7 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.Scanner;
 import java.io.IOException;
-
+import java.text.DecimalFormat;
 import java.awt.event.*;
 
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
@@ -44,6 +44,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private int RequestItems;
 	// private ArrayList <Ranged> rangedWeap;
 	private File saveFile; 
+	private double time;
+	private double ctime;
 
 	public Game() {
 		new Thread(this).start();
@@ -63,6 +65,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		restaurant=new ImageIcon ("pictures/restaurantbackground.jpg");
 		kitchenbackground=new ImageIcon ("pictures/kitchen.jpg");
 		RequestItems = 0;
+		time=System.currentTimeMillis();
+		ctime=0;
 	}
 
 	public void createFile(){
@@ -205,12 +209,17 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				break;
 
 			case "Locations":
-			//g2d.drawImage(kitchenbackground.getImage(),0,0,getWidth(),getHeight(),this);
-			player.getLocation().drawLocation(g2d);
+			g2d.setFont(new Font("Courier New", Font.PLAIN, 50));
+			double currentTime = System.currentTimeMillis();
+			ctime += (currentTime - time) / 1000;
+			time = currentTime;
+			
+			 player.getLocation().drawLocation(g2d);
 
-			player.getLocation().getOption();
+			 player.getLocation().getOption();
 			drawLocationsScreen(g2d);
-			completeTask();
+			g2d.drawString(new DecimalFormat("#0.00").format(ctime),20,30);
+			
 			
 				break;
 
@@ -238,36 +247,19 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	
 		// Draw items in the current location
 		//for (Options option : player.getLocation().getOptionList()) {
-		System.out.println("init topp "+player.getLocation().getTopp());
+			//System.out.println("init list size "+player.getLocation().getOptionList().get(0).getList().size());
+		//	System.out.println("init topp "+player.getLocation().getTopp());
+
 		for(int i=0; i<player.getLocation().getTopp(); i++){
+			//System.out.println("init topp "+player.getLocation().getOptionList().get(0).getList().get(i));
 
 		
-			player.getLocation().getOptionList().get(0).getList().get(i).drawImage(g2d);
+			player.getLocation().getOptionList().element().getList().get(i).drawImage(g2d);
 			}
 		}
 	
 	
-	public void completeTask() {
-        if (taskCompleted) {
-            long endTime = System.currentTimeMillis();
-            long timeTaken = endTime - startTime;
-            int score = calculateScore(timeTaken);
-            JOptionPane.showMessageDialog(null, "Task Completed in " + timeTaken + " milliseconds. Your score: " + score);
-            
-        }
-    }
-
-
-    // Calculate score based on time taken
-    private int calculateScore(long timeTaken) {
-        if (timeTaken < 5000) {
-            return 100;  // Excellent, if completed in under 5 seconds
-        } else if (timeTaken < 10000) {
-            return 75;  // Good, if completed in under 10 seconds
-        } else {
-            return 50;  // Could be better, if completed in over 10 seconds
-        }
-    }
+	
 
 	
 	// DO NOT DELETE
@@ -383,6 +375,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			if(r.mouseCol(arg0.getX(), arg0.getY())){
 				//stuff happens]
 				player.getLocation().incTopp();
+				break;
 			}
 		}
 	}

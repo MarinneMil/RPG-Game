@@ -8,10 +8,9 @@ public class Checks extends Options {
     }
 
     public void setItems(){
-        super.addItems(new RequestItems("check chef", 50,50,50,50, new ImageIcon("dough.png"))); 
-        super.addItems(new RequestItems("check waiter",500,500,50,50, new ImageIcon("dough.png")));
-        super.addItems(new RequestItems("check bus boy",300,500,50,50, new ImageIcon("dough.png")));
-        super.addItems(new RequestItems("check customers",500,500,50,50, new ImageIcon("dough.png")));
+        super.addItems(new RequestItems("Get Pizza Dough", 300, 500, 200, 200, new ImageIcon("Pictures/dough.png")));
+        super.addItems(new RequestItems("Add Sauce", 300, 500, 200, 200, new ImageIcon("pictures/sauce.png")));
+          super.addItems(new RequestItems("Add cheese", 300, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
 
     }
 }

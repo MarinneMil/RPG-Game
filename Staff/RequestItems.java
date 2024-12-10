@@ -64,7 +64,7 @@ public void setPic(ImageIcon pic) {
 public void drawImage(Graphics g2d) {
     // TODO Auto-generated method stub
 g2d.drawImage(pic.getImage(), x,y,w,h,null)  ;
-System.out.println("item on "+Items);
+//System.out.println("item on "+Items);
 }
 public boolean mouseCol(int xv, int yv){
     Rectangle mouse = new Rectangle(xv,yv, 1,1);

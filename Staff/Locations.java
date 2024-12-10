@@ -1,6 +1,9 @@
 package Staff;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.swing.ImageIcon;
 
 public class Locations {
@@ -8,7 +11,7 @@ public class Locations {
     private ImageIcon pic;
     private String name;
     private ArrayList<Locations> maps;
-    private ArrayList<Options> optionList;
+    private Queue<Options> optionList;
     private int topp; // Changed from a single Options object to a list of Options
 
     public Locations() {
@@ -18,11 +21,21 @@ public class Locations {
         h = 0;
         pic = new ImageIcon();
         name = "";
-        optionList = new ArrayList<>();
-        topp=0; // Initialize the list
+        optionList = new LinkedList<>();
+        topp=1; // Initialize the list
     }
 
-    public Locations(int xV, int yV, int width, int height, ImageIcon p, String name, ArrayList<Options> options) {
+    public Locations(int xV, int yV, int width, int height, ImageIcon p, String name) {
+        x = xV;
+        y = yV;
+        w = width;
+        h = height;
+        pic = p;
+        this.name = name;
+        optionList= new LinkedList <Options> ();
+        topp=1; // Initialize with a list of options
+    }
+    public Locations(int xV, int yV, int width, int height, ImageIcon p, String name, Queue<Options> options) {
         x = xV;
         y = yV;
         w = width;
@@ -30,12 +43,25 @@ public class Locations {
         pic = p;
         this.name = name;
         this.optionList = options;
-        topp=0; // Initialize with a list of options
+        topp=1; // Initialize with a list of options
     }
+    public Queue <Options> setQueue(ArrayList <Options> list){
+        Queue <Options> qopt= new LinkedList<>();
 
+        for(int i=0; i<list.size(); i++){
+    qopt.add(list.remove(i));
+        }
+        System.out.println("testing queue"+qopt.size());
+        return qopt;
+    }
     public void incTopp(){
-        if(topp<optionList.size())
-        topp++;
+        System.out.println("top is "+topp+" checking list "+optionList.element().getList().size());
+        if(topp<optionList.element().getList().size()){
+            topp=topp+1;
+            System.out.println("top is now "+topp);
+
+        }
+        
     }
     public int getTopp(){
         return topp;
@@ -49,20 +75,21 @@ public class Locations {
             g2d.drawString("Option: " + option.toString(), 300, 400); // Print out a simple description of the option
             // Draw the items for each option
             for (RequestItems r : option.getList()) {
-            r.drawImage(g2d);            }
+          //  r.drawImage(g2d);            
+          }
         }
     }
 
-    public ArrayList<Options> getOptionList() {
+    public Queue<Options> getOptionList() {
         return optionList; // Return the list of options
     }
 
-    public void setOptionList(ArrayList<Options> optionList) {
-        this.optionList = optionList; // Set the list of options
+    public void setOptionList(Queue<Options> options) {
+        this.optionList = options; // Set the list of options
     }
 
     public Options getOption() {
-        return optionList.isEmpty() ? null : optionList.get(0); // Return the first option if the list is not empty
+        return optionList.isEmpty() ? null : optionList.element(); // Return the first option if the list is not empty
     }
 
     public void setOption(Options option) {
