@@ -36,6 +36,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private String screen;
 	private Characters player;
 	private ImageIcon kitchenbackground;
+	private ImageIcon endscreenbackground;
 	private ArrayList<Weapons> WeapList;
 	private Queue <Customers> customer;  
 	private ImageIcon restaurant;
@@ -64,6 +65,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		//System.out.println(CharList.get(0).getTasks().getList());
 		restaurant=new ImageIcon ("pictures/restaurantbackground.jpg");
 		kitchenbackground=new ImageIcon ("pictures/kitchen.jpg");
+		endscreenbackground = new ImageIcon ("pictures/endscreen.jpg");
 		RequestItems = 0;
 		time=System.currentTimeMillis();
 		ctime=0;
@@ -103,11 +105,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	 myWriter = new FileWriter(saveFile);
 
 	//write whatever you want to save 
-	if(customer.isEmpty()){
-		myWriter.write("win");
-	}
-	else {
-		myWriter.write("you have "+customer.size()+"tasks left left");
+	if(player.getLocation().getTopp()==(player.getLocation().getOptionList().element().getList().size())){
+		myWriter.write("your time is"+ );
 	}
 	myWriter.close();
 	System.out.println("succesfuly wrote to file");
@@ -220,8 +219,13 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			drawLocationsScreen(g2d);
 			g2d.drawString(new DecimalFormat("#0.00").format(ctime),20,30);
 			
-			
+			End(); 
 				break;
+
+			case "Endscreen":
+			g2d.drawImage(endscreenbackground.getImage(),0,0,getWidth(),getHeight(),this);
+				
+			break;
 
 				
 		}
@@ -256,6 +260,13 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		
 			player.getLocation().getOptionList().element().getList().get(i).drawImage(g2d);
 			}
+		}
+
+		public void End(){
+			if(player.getLocation().getTopp()==(player.getLocation().getOptionList().element().getList().size())){
+				screen = "EndScreen";
+			}
+
 		}
 	
 	
