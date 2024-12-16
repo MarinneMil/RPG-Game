@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.LinkedList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,30 +46,51 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private int RequestItems;
 	// private ArrayList <Ranged> rangedWeap;
 	private File saveFile; 
+	private int fastestMinutes = 0;
+    private int fastestSeconds = 0;
+	private int fastestmilliSeconds =0;
+
+	private int currentLevel = 1;
+	private int seconds = 0; // Track seconds
+	private int minutes = 0; // Track minutes
+	private int milliseconds = 0;
+	
 	private double time;
-	private double ctime;
+	private Timer timer;
+	private Timer FinishedTimer;
+
+	private int TypingIndex; 
+	private String TypeWords; 
+	private String TypeWords1; 
+
+	// private double time;
+	// private double ctime;
 
 	public Game() {
 		new Thread(this).start();
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		saveFile=new File("save_file2.0.txt");
+		saveFile = new File("save_file2.0.txt");
 		key = -1;
 		x = 0;
 		y = 0;
 		CharList = setCharList();
 		WeapList = setWeapList(); 
 		screen = "start";
-		// rangedWeap = new ArrayList <Ranged> ();
 		customer = setEs();
-		//System.out.println(CharList.get(0).getTasks().getList());
-		restaurant=new ImageIcon ("pictures/restaurantbackground.jpg");
-		kitchenbackground=new ImageIcon ("pictures/kitchen.jpg");
-		endscreenbackground = new ImageIcon ("pictures/endscreen.jpg");
+		restaurant = new ImageIcon("pictures/restaurantbackground.jpg");
+		kitchenbackground = new ImageIcon("pictures/kitchen.jpg");
+		endscreenbackground = new ImageIcon("pictures/endscreen.jpg");
 		RequestItems = 0;
-		time=System.currentTimeMillis();
-		ctime=0;
+		
+		// Initialize timer
+		timer = new Timer(50, e -> updateTimer());
+		seconds = 0;
+		minutes = 0;
+		milliseconds = 0;
+		TypeWords= "Welcome to the RPG Restaurant ";
+		TypeWords1= "Click on the ingredents to make 4 pizzas ";
 	}
 
 	public void createFile(){
@@ -99,23 +121,17 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		
 	}
 
-	public void writeToFile(){
-		FileWriter myWriter;
-		try{
-	 myWriter = new FileWriter(saveFile);
-
-	//write whatever you want to save 
-	if(player.getLocation().getTopp()==(player.getLocation().getOptionList().element().getList().size())){
-		myWriter.write("your time is"+ );
+	public void writeToFile() {
+		try {
+			FileWriter myWriter = new FileWriter(saveFile);
+			String timeStr = String.format("%02d:%02d:%03d", minutes, seconds, milliseconds);
+			myWriter.write(timeStr);
+			myWriter.close();
+			System.out.println("successfully wrote to file");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	myWriter.close();
-	System.out.println("succesfuly wrote to file");
-} catch (IOException e){
-	// TODO Auto-generated castch block 
-	e.printStackTrace();
-}
-}
-
 	
 
 	public Queue <Customers> setEs(){
@@ -195,36 +211,45 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				for (Weapons w : WeapList) {
 					w.drawWeap(g2d);
 				}
+				g2d.drawString(TypeWords.substring(0,TypingIndex),400,200);
+				if(TypingIndex<TypeWords.length()){
+					if(System.currentTimeMillis()-time > 100){
+						time= System.currentTimeMillis();
+						TypingIndex++; 
+					}
+				}
 				
 			break;
 
 			case "selection":
 
-				drawSelectScreen(g2d);
+			drawSelectScreen(g2d);
 				
-				g2d.fillRect(300,900,200,50);
-				g2d.setColor(Color.white);
-				g2d.drawString("starts",350,930);
-				break;
+			g2d.fillRect(300,900,200,50);
+			g2d.setColor(Color.white);
+			g2d.drawString("starts",350,930);
+			break;
 
 			case "Locations":
 			g2d.setFont(new Font("Courier New", Font.PLAIN, 50));
-			double currentTime = System.currentTimeMillis();
-			ctime += (currentTime - time) / 1000;
-			time = currentTime;
+			// double currentTime = System.currentTimeMillis();
+			// ctime += (currentTime - time) / 1000;
+			// time = currentTime;
 			
 			 player.getLocation().drawLocation(g2d);
 
 			 player.getLocation().getOption();
 			drawLocationsScreen(g2d);
-			g2d.drawString(new DecimalFormat("#0.00").format(ctime),20,30);
+			// g2d.drawString(new DecimalFormat("#0.00").format(ctime),20,30);
 			
 			End(); 
-				break;
+			break;
 
 			case "Endscreen":
-			g2d.drawImage(endscreenbackground.getImage(),0,0,getWidth(),getHeight(),this);
-				
+			g2d.drawImage(endscreenbackground.getImage(), 0, 0, getWidth(), getHeight(), this);
+			g2d.setFont(new Font("Courier New", Font.PLAIN, 50));
+			g2d.setColor(Color.WHITE);
+			g2d.drawString("Completion Time: " + getSavedTime(), getWidth()/2 - 200, getHeight()/2 - 300);
 			break;
 
 				
@@ -234,13 +259,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	public void drawSelectScreen(Graphics g2d) {
 		player.drawChar(g2d);
 		g2d.setFont(new Font("Courier New", Font.PLAIN, 20));
-		g2d.drawString("You picked " + player.toString() + ". Your characteristics are " + " health: " + player.getHealth() + " smarts: "
-				+ player.getSmarts() + " friendliness: " + player.getFriendliness() + " speed: " + player.getSpeed(),
-				200, 700);
+		g2d.drawString("You picked " + player.toString(), 200, 700);
 
 		player.drawWeap(g2d);
-		//g2d.drawString("Your weapon levels for " + player.toString() + " is" + ". You skill levels are " +  " damage: " + player.getWeap().getdamage() + " duribility: "
-		//		+ player.getWeap().getduribility() + " dps: " + player.getWeap().getDps() + " speed: " + player.getSpeed(), 200, 800);
+		
 
 				customer.peek().drawChar(g2d);
 
@@ -249,29 +271,63 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		player.drawChar(g2d);
 		customer.peek().drawChar(g2d);
 	
+		// Display current time
+		g2d.setFont(new Font("Courier New", Font.PLAIN, 30));
+		g2d.setColor(Color.BLACK);
+		String timeStr = String.format("%02d:%02d:%03d", minutes, seconds, milliseconds);
+		g2d.drawString(timeStr, 20, 30);
+		
 		// Draw items in the current location
-		//for (Options option : player.getLocation().getOptionList()) {
-			//System.out.println("init list size "+player.getLocation().getOptionList().get(0).getList().size());
-		//	System.out.println("init topp "+player.getLocation().getTopp());
-
+		
 		for(int i=0; i<player.getLocation().getTopp(); i++){
-			//System.out.println("init topp "+player.getLocation().getOptionList().get(0).getList().get(i));
+			player.getLocation().getOptionList().element().getList().get(i).drawImage(g2d);
+		}
 
 		
-			player.getLocation().getOptionList().element().getList().get(i).drawImage(g2d);
+	}
+
+	public void End() {
+		if(player.getLocation().getTopp() == (player.getLocation().getOptionList().element().getList().size())) {
+			timer.stop();  // Stop the timer
+			writeToFile(); // Save the final time
+			screen = "Endscreen";
+		}
+	}
+	
+	
+		// Update the timer every 10ms
+		private void updateTimer() {
+			milliseconds+=50; // Increment milliseconds
+	
+			if (milliseconds >= 1000) { // 100 milliseconds = 1 second
+				milliseconds = 0; // Reset milliseconds
+				seconds++; // Increment seconds
 			}
+	
+			if (seconds >= 60) { // 60 seconds = 1 minute
+				seconds = 0; // Reset seconds
+				minutes++; // Increment minutes
+			}
+	
+			// Repaint the screen to update the displayed time
+			repaint();
 		}
 
-		public void End(){
-			if(player.getLocation().getTopp()==(player.getLocation().getOptionList().element().getList().size())){
-				screen = "EndScreen";
+
+		public String getSavedTime() {
+			try {
+				Scanner sc = new Scanner(saveFile);
+				if (sc.hasNextLine()) {
+					String time = sc.nextLine();
+					sc.close();
+					return time;
+				}
+				sc.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
-
+			return "No time recorded";
 		}
-	
-	
-	
-
 	
 	// DO NOT DELETE
 	@Override
@@ -377,8 +433,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			}
 		}
 		//customer.remove();
-		else if(screen.equals("selection") &&  x>300 && x<500 && y>900 && y<950){
-			screen="Locations";
+		else if(screen.equals("selection") && x>300 && x<500 && y>900 && y<950){
+			screen = "Locations";
+			timer.start();  // Start the timer here
 		}
 		if(screen.equals("Locations"))
 		{

@@ -26,6 +26,20 @@ public class Pizza extends Options {
              super.addItems(new RequestItems("Get Pizza Dough", 300, 500, 200, 200, new ImageIcon("Pictures/dough.png")));
          super.addItems(new RequestItems("Add Sauce", 300, 500, 200, 200, new ImageIcon("pictures/sauce.png")));
            super.addItems(new RequestItems("Add cheese", 300, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
+           
+
+           super.addItems(new RequestItems("Get Pizza Dough", 450, 500, 200, 200, new ImageIcon("Pictures/dough.png")));
+           super.addItems(new RequestItems("Add Sauce", 450, 500, 200, 200, new ImageIcon("pictures/sauce.png")));
+             super.addItems(new RequestItems("Add cheese", 450, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
+
+             super.addItems(new RequestItems("Get Pizza Dough", 800, 500, 200, 200, new ImageIcon("Pictures/dough.png")));
+             super.addItems(new RequestItems("Add Sauce", 800, 500, 200, 200, new ImageIcon("pictures/sauce.png")));
+               super.addItems(new RequestItems("Add cheese", 800, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
+
+               super.addItems(new RequestItems("Get Pizza Dough", 600, 500, 200, 200, new ImageIcon("Pictures/dough.png")));
+               super.addItems(new RequestItems("Add Sauce", 600, 500, 200, 200, new ImageIcon("pictures/sauce.png")));
+                 super.addItems(new RequestItems("Add cheese", 600, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
+                 super.addItems(new RequestItems("Add cheese", 600, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
         System.out.println(super.getList().size());
      }
      public String toString (){

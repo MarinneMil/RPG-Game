@@ -14,7 +14,7 @@ public class Kitchen extends Locations {
         // Add multiple options to the Kitchen
         ArrayList<Options> options = new ArrayList<>();
         options.add(new Pizza());
-        options.add(new Dishes());  // Add the pizza option;
+    
         Collections.shuffle(options);
         setOptionList(setQueue(options)); 
         System.out.println("Pizza test "+super.getOptionList().element());    // Set the list of options;

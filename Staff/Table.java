@@ -6,7 +6,7 @@ import java.util.Collections;
 public class Table extends Locations {
 
     public Table() {
-        super(0, 0, 1800, 1600, new ImageIcon("pictures/Table.png"), "Table");
+        super(0, 0, 1800, 1600, new ImageIcon("pictures/3.png"), "Table");
         setName("Table");
 
         // Set the options for this location
@@ -17,7 +17,7 @@ public class Table extends Locations {
     }
 
     public Table(int x, int y) {
-        super(x, y, 50, 50, new ImageIcon("pictures/Table.png"), "Table");
+        super(x, y, 50, 50, new ImageIcon("pictures/3.png"), "Table");
 
         // Set the options for this location
         ArrayList<Options> options = new ArrayList<>();

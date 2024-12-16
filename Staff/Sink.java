@@ -12,7 +12,7 @@ public class Sink extends Locations {
 
         // Set the options for this location
         ArrayList<Options> options = new ArrayList<>();
-        options.add(new Orders());
+        options.add(new Dishes());
                 Collections.shuffle(options);
         setOptionList(setQueue(options)); 
     }

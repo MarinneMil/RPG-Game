@@ -5,7 +5,7 @@ public class Campbell extends Customers{
         super();
     }
     public Campbell(int x, int y){
-       super(x,y,200,200,5,6,2,new ImageIcon("pictures/Campbell.png"));
+       super(x,y,200,200,5,6,2,new ImageIcon(""));
     }
     public String toString(){
         return "Campbell";

@@ -8,9 +8,12 @@ public class Dishes extends Options {
     }
 
     public void setItems(){
-        super.addItems(new RequestItems("Get Pizza Dough", 300, 500, 200, 200, new ImageIcon("Pictures/dough.png")));
-        super.addItems(new RequestItems("Add Sauce", 300, 500, 200, 200, new ImageIcon("pictures/sauce.png")));
-          super.addItems(new RequestItems("Add cheese", 300, 500, 200, 200, new ImageIcon("pictures/cheese.png")));
+        super.addItems(new RequestItems("Get Pizza Dough", 500, 500, 200, 200, new ImageIcon("Pictures/dirtydishes.png")));
+        super.addItems(new RequestItems("Add Sauce", 100, 500, 200, 200, new ImageIcon("pictures/dirtydishes.png")));
+          super.addItems(new RequestItems("Add cheese", 300, 500, 200, 200, new ImageIcon("pictures/dirtydishes.png")));
+          super.addItems(new RequestItems("Add cheese", 200, 500, 200, 200, new ImageIcon("pictures/dirtydishes.png")));
+          super.addItems(new RequestItems("Add cheese", 400, 500, 200, 200, new ImageIcon("pictures/dirtydishes.png")));
+          super.addItems(new RequestItems("Add cheese", 600, 500, 200, 200, new ImageIcon("pictures/dirtydishes.png")));
 
     }
     public String toString (){

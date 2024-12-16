@@ -13,7 +13,7 @@ public class Chef extends Characters{
     }
 
     public Chef(int x, int y){
-        super(x,y,200,200,2, 2, 2, 2, new ImageIcon("pictures/cook.png"),new Pan(x,y),new Kitchen(), "");
+        super(x,y,200,200,2, 2, 2, 2, new ImageIcon("pictures/cook.png"),new Pan(x,y),new Kitchen(), "Chef");
     }
     public String toString(){
         return "Chef";
